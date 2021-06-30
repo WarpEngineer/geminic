@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Module geminic</title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css" title="EDoc">
+</head>
+<body bgcolor="white">
+<div class="navbar"><a name="#navbar_top"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<hr>
+
+<h1>Module geminic</h1>
+<ul class="index"><li><a href="#description">Description</a></li><li><a href="#types">Data Types</a></li><li><a href="#index">Function Index</a></li><li><a href="#functions">Function Details</a></li></ul>geminic - A Gemini protocol client library.
+<p>Copyright © ( C ) 2021, agmadi</p>
+
+<p><b>Behaviours:</b> <a href="gen_server.html"><tt>gen_server</tt></a>.</p>
+<p><b>Authors:</b> agmadi.</p>
+
+<h2><a name="description">Description</a></h2>geminic - A Gemini protocol client library.
+  
+<h2><a name="types">Data Types</a></h2>
+
+<h3 class="typedecl"><a name="type-clientcert">clientcert()</a></h3>
+<p><tt>clientcert() = {{certfile, string()}, {keyfile, string()}} | undefined</tt></p>
+
+
+<h3 class="typedecl"><a name="type-option">option()</a></h3>
+<p><tt>option() = {autoredirect, true | false} | {clientcert, <a href="#type-clientcert">clientcert()</a>}</tt></p>
+
+
+<h3 class="typedecl"><a name="type-optionlist">optionlist()</a></h3>
+<p><tt>optionlist() = [<a href="#type-option">option()</a>]</tt></p>
+
+
+<h3 class="typedecl"><a name="type-returnheader">returnheader()</a></h3>
+<p><tt>returnheader() = {Code::string(), Meta::string()}</tt></p>
+
+
+<h3 class="typedecl"><a name="type-returnresult">returnresult()</a></h3>
+<p><tt>returnresult() = {<a href="#type-returnheader">returnheader()</a>, Result::string()}</tt></p>
+
+
+<h2><a name="index">Function Index</a></h2>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#generate_outline-1">generate_outline/1</a></td><td>Generate an outline using heading markers in the result.</td></tr>
+<tr><td valign="top"><a href="#getopt-1">getopt/1</a></td><td>Get an option.</td></tr>
+<tr><td valign="top"><a href="#getopts-0">getopts/0</a></td><td>Get all options.</td></tr>
+<tr><td valign="top"><a href="#make_cert-2">make_cert/2</a></td><td>Create a certificate tuple to be used by setopt.</td></tr>
+<tr><td valign="top"><a href="#request-1">request/1</a></td><td>Send a request with default timeout of 30 seconds.</td></tr>
+<tr><td valign="top"><a href="#request-2">request/2</a></td><td>Send a request with specific timeout.</td></tr>
+<tr><td valign="top"><a href="#setopt-2">setopt/2</a></td><td>Set an option.</td></tr>
+<tr><td valign="top"><a href="#start_link-0">start_link/0</a></td><td>
+  Starts the server.</td></tr>
+</table>
+
+<h2><a name="functions">Function Details</a></h2>
+
+<h3 class="function"><a name="generate_outline-1">generate_outline/1</a></h3>
+<div class="spec">
+<p><tt>generate_outline(Result::<a href="#type-returnresult">returnresult()</a>) -&gt; [string()]</tt><br></p>
+<p>returns: A list of strings containing any headers from the result.</p>
+</div><p>Generate an outline using heading markers in the result
+  </p>
+
+<h3 class="function"><a name="getopt-1">getopt/1</a></h3>
+<div class="spec">
+<p><tt>getopt(Opt::term()) -&gt; <a href="#type-option">option()</a> | error</tt><br></p>
+<p><tt>Opt</tt>: The key for the option to get<br>
+</p>
+<p>returns: The value of the option or the atom 'error' if not found</p>
+</div><p>Get an option
+  </p>
+
+<h3 class="function"><a name="getopts-0">getopts/0</a></h3>
+<div class="spec">
+<p><tt>getopts() -&gt; <a href="#type-optionlist">optionlist()</a></tt><br></p>
+<p>returns: The complete options list with all settings</p>
+</div><p>Get all options
+  </p>
+
+<h3 class="function"><a name="make_cert-2">make_cert/2</a></h3>
+<div class="spec">
+<p><tt>make_cert(CertFile::string(), KeyFile::string()) -&gt; <a href="#type-clientcert">clientcert()</a></tt><br></p>
+<p><tt>CertFile</tt>: The file containing the certificate.<br>
+<tt>KeyFile</tt>: The file containin the private key.<br>
+</p>
+<p>returns: A tuple that can be used by setopt to set the clientcert option.</p>
+</div><p>Create a certificate tuple to be used by setopt.
+  </p>
+
+<h3 class="function"><a name="request-1">request/1</a></h3>
+<div class="spec">
+<p><tt>request(URI::string()) -&gt; <a href="#type-returnresult">returnresult()</a> | {error, Reason::term()}</tt><br></p>
+<p><tt>URI</tt>: The full URI requested, including the protocol.<br>
+</p>
+<p>returns: A tuple of { Header, Body } or { error, Reason }</p>
+</div><p>Send a request with default timeout of 30 seconds.
+  </p>
+
+<h3 class="function"><a name="request-2">request/2</a></h3>
+<div class="spec">
+<p><tt>request(URI::string(), Timeout::integer() | infinity) -&gt; <a href="#type-returnresult">returnresult()</a> | {error, Reason::term()}</tt><br></p>
+<p><tt>URI</tt>: The full URI requested, including the protocol.<br>
+<tt>Timeout</tt>: The timeout in milliseconds or 'infinity'<br>
+</p>
+<p>returns: A tuple of { Header, Body } or { error, Reason }</p>
+</div><p>Send a request with specific timeout.
+  </p>
+
+<h3 class="function"><a name="setopt-2">setopt/2</a></h3>
+<div class="spec">
+<p><tt>setopt(Opt::term(), Val::term()) -&gt; <a href="#type-optionlist">optionlist()</a></tt><br></p>
+<p><tt>Opt</tt>: The key for the option to set<br>
+<tt>Val</tt>: The value for the option to set<br>
+</p>
+<p>returns: The complete options list with all settings</p>
+</div><p>Set an option
+  </p>
+
+<h3 class="function"><a name="start_link-0">start_link/0</a></h3>
+<div class="spec">
+<p><tt>start_link() -&gt; {ok, Pid} | ignore | {error, Error}</tt><br></p>
+</div><p>
+  Starts the server
+ </p>
+<hr>
+
+<div class="navbar"><a name="#navbar_bottom"></a><table width="100%" border="0" cellspacing="0" cellpadding="2" summary="navigation bar"><tr><td><a href="overview-summary.html" target="overviewFrame">Overview</a></td><td><a href="http://www.erlang.org/"><img src="erlang.png" align="right" border="0" alt="erlang logo"></a></td></tr></table></div>
+<p><i>Generated by EDoc</i></p>
+</body>
+</html>

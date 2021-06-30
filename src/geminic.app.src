@@ -1,0 +1,16 @@
+{application, geminic,
+ [{description, "An OTP Gemini protocol client application"},
+  {vsn, "0.1.0"},
+  {registered, []},
+  {mod, {geminic_app, []}},
+  {applications,
+   [kernel,
+    stdlib,
+    ssl
+   ]},
+  {env,[]},
+  {modules, []},
+
+  {licenses, ["MIT"]},
+  {links, []}
+ ]}.

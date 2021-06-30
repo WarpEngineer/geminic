@@ -1,0 +1,36 @@
+** this is the overview.doc file for the application 'geminic' **
+
+@author A. G. Madi (@WarpEngineer)
+@copyright 2021 A. G. Madi
+@version 0.1.0
+@title A Gemini protocol client library.
+@doc `geminic' is a library for writing Gemini protocol clients. ([https://gemini.circumlunar.space/])
+
+== geminic - Erlang client library for Gemini protocol ==
+
+=== Usage ===
+
+Include the library in a rebar3 app as a dependency and add it to the apps list in rebar.config.
+
+Call geminic:request( URL ) to retrieve a page. The returned result will be a tuple containing the status code, status metadata, and the body, if available.
+
+=== Retrieve a Gemini page without auto-redirect ===
+
+``` 1> geminic:request( "gemini://warpengineer.space" ).'''
+
+=== Retrieve a Gemini page with auto-redirect ===
+
+```
+    1> geminic:setopt(autoredirect, true).
+    2> geminic:request("gemini://warpengineer.space").'''
+
+=== Retrieve a Gemini page with a custom timeout of 60 seconds (default is 30 seconds) ===
+
+``` 1> geminic:request( "gemini://warpengineer.space", 60000 ).'''
+
+=== Use a client certificate ===
+
+``` 1> geminic:setopt(clientcert, geminic:make_cert("mycert.crt","mykey.key")).
+    2> geminic:request("gemini://warpengineer.space/restricted/index.gemini").'''
+
+
