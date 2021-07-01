@@ -27,7 +27,7 @@
 %% API
 -export( [start_link/0] ).
 -export( [request/1, request/2, setopt/2, getopts/0, getopt/1] ).
--export( [generate_outline/1, make_cert/2] ).
+-export( [generate_outline/1, gather_links/1, make_cert/2] ).
 
 %% gen_server callbacks
 -export( [init/1,
@@ -350,6 +350,34 @@ outline( [ Line | Rest ], Outline ) ->
 		_ ->
 			outline( Rest, Outline )
 	end.
+
+%%%-------------------------------------------------------------------
+%%% @doc Gather all links present in the result
+%%% 
+%%% @param ReturnResult The result as returned by a request.
+%%% @returns A list of strings containing any links from the result.
+%%% @end
+%%%-------------------------------------------------------------------
+-spec gather_links( Result::returnresult() ) -> [ string() ].
+gather_links( { _Header, Body } ) ->
+	Lines = string:split( Body, "\n", all ),
+	links( Lines, [] ).
+
+-spec links( [ string() ], [ string() ] ) -> [ string() ].
+links( [], Links ) ->
+	lists:reverse( Links );
+links( [ Line | Rest ], Links ) ->
+	case Line of
+		[ $=, $> | Link ] ->
+			links( Rest, [ strip_link( Link ) | Links ] );
+		_ ->
+			links( Rest, Links )
+	end.
+
+-spec strip_link( Link::string() ) -> string().
+strip_link( Link ) ->
+	{ L, _ } = string:take( string:trim( Link ), [ 32, 9 ], true ),
+	L.
 
 %%%-------------------------------------------------------------------
 %%% @doc Create a certificate tuple to be used by setopt.
